@@ -14,11 +14,17 @@ initConfigs()
 appConfig = getFileMappings()
 
 state_name = appConfig['State Name'].dropna()
+start_date = appConfig['Start Date'][0]
+end_date = appConfig['End Date'][0]
 
-start_date = datetime.date(2022, 5, 1)
-end_date = datetime.date(2022, 5, 31)
+# start_date = datetime.date(2022, 5, 1)
+# end_date = datetime.date(2022, 5, 31)
 
-MONTH_NAME = 'May_2022.xlsx'
+currMonth = start_date.strftime("%B")
+currYear = start_date.strftime("%Y")
+
+# MONTH_NAME = 'May_2022.xlsx'
+MONTH_NAME = currMonth + "_" + currYear + ".xlsx"  
 writer = pd.ExcelWriter(MONTH_NAME, engine='xlsxwriter')
 
 days = (end_date - start_date).days
@@ -77,7 +83,8 @@ for curr_state in state_name:
     df ['solarNet'] = df['solarDrawal'] + df['solarInjection']
     df ['windNet'] = df['windDrawal'] + df['windInjection']
     df ['hydroNet'] = df['hydroDrawal'] + df['hydroInjection']
+    df ['gdamNet'] = df['gdamDrawal'] + df['gdamInjection']
     df.to_excel(writer, sheet_name=curr_state)
-    print("OK")
+    print("{} Processed".format(curr_state))
 writer.save()
 print("OK")

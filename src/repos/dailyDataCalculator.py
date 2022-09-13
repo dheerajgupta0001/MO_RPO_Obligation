@@ -17,8 +17,10 @@ def daywiseDataCalculator(currStateExceOutput, currDateData, currState, schedule
             ScheduleData = temp[scheduleAmount].split(',')
             ScheduleDataList = pd.Series(ScheduleData)
             scheduleDataSum = ScheduleDataList.astype('float').sum()
-            if scheduleType in ['ISGS', 'LTA', 'MTOA', 'REMC', 'IEX', 'PXI', 'STOA', 'GDAM_IEX', 'GDAM_PXI', 'GDAM_HPX', 'RTM_IEX', 'RTM_PXI', 'RTM_HPX']:
-                if scheduleType == 'REMC' and subScheduleType in ['LTA', 'MTOA', 'IEX', 'PXI', 'STOA', 'GDAM_IEX', 'GDAM_PXI', 'GDAM_HPX', 'RTM_IEX', 'RTM_PXI', 'RTM_HPX']:
+            # if scheduleType in ['ISGS', 'LTA', 'MTOA', 'REMC', 'IEX', 'PXI', 'STOA', 'GDAM_IEX', 'GDAM_PXI', 'GDAM_HPX', 'RTM_IEX', 'RTM_PXI', 'RTM_HPX']:
+            if scheduleType in ['ISGS', 'LTA', 'MTOA', 'REMC', 'STOA', 'GDAM_IEX', 'GDAM_PXI', 'GDAM_HPX']:
+                # if scheduleType == 'REMC' and subScheduleType in ['LTA', 'MTOA', 'IEX', 'PXI', 'STOA', 'GDAM_IEX', 'GDAM_PXI', 'GDAM_HPX', 'RTM_IEX', 'RTM_PXI', 'RTM_HPX']:
+                if scheduleType == 'REMC' and subScheduleType in ['LTA', 'MTOA', 'STOA', 'GDAM_IEX', 'GDAM_PXI', 'GDAM_HPX']:
                     # cheack if "TRANSACTION TYPE" is present.
                     if currStateExceOutput.get(subScheduleType) == None:
                         # if subScheduleType not in currStateExceOutput[subScheduleType]:
@@ -28,11 +30,14 @@ def daywiseDataCalculator(currStateExceOutput, currDateData, currState, schedule
                             # 'hydroData': {'drawal': 0, 'injection': 0, 'net': 0}
                             'solarDrawal': 0, 'solarInjection': 0, 'solarNet': 0,
                             'windDrawal': 0, 'windInjection': 0, 'windNet': 0,
-                            'hydroDrawal': 0, 'hydroInjection': 0, 'hydroNet': 0
+                            'hydroDrawal': 0, 'hydroInjection': 0, 'hydroNet': 0,
+                            'gdamDrawal': 0, 'gdamInjection': 0, 'gdamNet': 0
                         }
                     if parentAcronymType == 'BuyerWBESParentStateAcronym':
-                        if seller in set(solar):
-                            # currStateExceOutput[subScheduleType]['solarData']['drawal'] += scheduleDataSum
+                        if subScheduleType in ['GDAM_IEX', 'GDAM_PXI', 'GDAM_HPX']:
+                            currStateExceOutput[subScheduleType]['gdamDrawal'] += scheduleDataSum
+                            
+                        elif seller in set(solar):
                             currStateExceOutput[subScheduleType]['solarDrawal'] += scheduleDataSum
 
                         elif seller in set(wind):
@@ -42,15 +47,19 @@ def daywiseDataCalculator(currStateExceOutput, currDateData, currState, schedule
                             currStateExceOutput[subScheduleType]['hydroDrawal'] += scheduleDataSum
 
                     if parentAcronymType == 'SellerWBESParentStateAcronym':
-                        if seller in set(solar):
-                            # currStateExceOutput[subScheduleType]['solarData']['injection'] += scheduleDataSum
-                            currStateExceOutput[subScheduleType]['solarInjection'] += scheduleDataSum
+                        if subScheduleType in ['GDAM_IEX', 'GDAM_PXI', 'GDAM_HPX']:
+                            currStateExceOutput[subScheduleType]['gdamInjection'] += -(scheduleDataSum)
+                            
+                        elif seller in set(solar):
+                            currStateExceOutput[subScheduleType]['solarInjection'] += -(scheduleDataSum)
 
                         elif seller in set(wind):
-                            currStateExceOutput[subScheduleType]['windInjection'] += scheduleDataSum
+                            currStateExceOutput[subScheduleType]['windInjection'] += -(scheduleDataSum)
 
                         elif seller in set(hydro):
-                            currStateExceOutput[subScheduleType]['hydroInjection'] += scheduleDataSum
+                            currStateExceOutput[subScheduleType]['hydroInjection'] += -(scheduleDataSum)
+                            
+                # except REMC schedules, this part handles
                 else:
                     # cheack if "TRANSACTION TYPE" is present.
                     if currStateExceOutput.get(scheduleType) == None:
@@ -61,10 +70,14 @@ def daywiseDataCalculator(currStateExceOutput, currDateData, currState, schedule
                             # 'hydroData': {'drawal': 0, 'injection': 0, 'net': 0}
                             'solarDrawal': 0, 'solarInjection': 0, 'solarNet': 0,
                             'windDrawal': 0, 'windInjection': 0, 'windNet': 0,
-                            'hydroDrawal': 0, 'hydroInjection': 0, 'hydroNet': 0
+                            'hydroDrawal': 0, 'hydroInjection': 0, 'hydroNet': 0,
+                            'gdamDrawal': 0, 'gdamInjection': 0, 'gdamNet': 0
                         }
                     if parentAcronymType == 'BuyerWBESParentStateAcronym':
-                        if seller in set(solar):
+                        if scheduleType in ['GDAM_IEX', 'GDAM_PXI', 'GDAM_HPX']:
+                            currStateExceOutput[scheduleType]['gdamDrawal'] += scheduleDataSum
+                            
+                        elif seller in set(solar):
                             # currStateExceOutput[scheduleType]['solarData']['drawal'] += scheduleDataSum
                             currStateExceOutput[scheduleType]['solarDrawal'] += scheduleDataSum
 
@@ -75,7 +88,10 @@ def daywiseDataCalculator(currStateExceOutput, currDateData, currState, schedule
                             currStateExceOutput[scheduleType]['hydroDrawal'] += scheduleDataSum
 
                     if parentAcronymType == 'SellerWBESParentStateAcronym':
-                        if seller in set(solar):
+                        if scheduleType in ['GDAM_IEX', 'GDAM_PXI', 'GDAM_HPX']:
+                            currStateExceOutput[scheduleType]['gdamInjection'] += -(scheduleDataSum)
+                            
+                        elif seller in set(solar):
                             # currStateExceOutput[scheduleType]['solarData']['injection'] += scheduleDataSum
                             currStateExceOutput[scheduleType]['solarInjection'] += -(scheduleDataSum)
 

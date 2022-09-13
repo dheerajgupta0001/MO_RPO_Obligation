@@ -5,7 +5,7 @@ config.xlsx
 __pycache__
 *.py[cod]
 *$py.class
-input_data/*
+input_wbes/*
 !input_data/.gitinclude
 ~*.xlsx
 
@@ -26,6 +26,8 @@ wheels/
 .installed.cfg 
 *.egg 
 *.manifest 
+*.spec 
+# output files
 *.spec 
 
 # Log files
