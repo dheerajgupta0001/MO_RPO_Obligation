@@ -28,7 +28,7 @@ wheels/
 *.manifest 
 *.spec 
 # output files
-*.spec 
+*_2022.xlsx
 
 # Log files
 pip-log.txt
