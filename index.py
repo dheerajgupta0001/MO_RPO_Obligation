@@ -31,24 +31,17 @@ days = (end_date - start_date).days
 
 logging = False
 
-ans_total = {}
 excelOutput = {}
 
 for curr_state in state_name:
 
     # cheack if "state" is present.
-    if excelOutput.get(curr_state) == None:
-        excelOutput[curr_state] = {}
-
-    ans = {}
-    ans_e = {}
-    ans_total[curr_state] = {}
+    # if excelOutput.get(curr_state) == None:
+    excelOutput[curr_state] = {}
 
     for i in range(days + 1):
 
         curr_date = start_date + datetime.timedelta(days=i)
-        ans[curr_date.strftime("%d-%m-%Y")] = {}
-        ans_e[curr_date.strftime("%d-%m-%Y")] = {}
 
         wbesApiData = SectionWbesDataFetcher(
             getJsonConfig()['user'], getJsonConfig()['password'])

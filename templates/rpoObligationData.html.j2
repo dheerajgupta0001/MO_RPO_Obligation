@@ -1,0 +1,50 @@
+{% extends "layoutBase.html.j2" %}
+{% block title %}RPO Obligation डेटा बनाएँ{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<style type='text/css'>
+    h1 {
+    color : black;
+    }
+    h3 {
+    color : black;
+    border: 0.4rem solid transparent;
+    /* width: 8em;
+    height: 10em; */
+    max-height: 30em;
+    overflow: auto;
+    font-size: 1.5rem;
+    padding: 1rem;
+    }
+</style>
+<h1><strong>Generate RPO Obligation Report</h1>
+<form class="form" method="POST" enctype="multipart/form-data">
+    <div class="form-row">
+        <div class="form-group col-md-6">
+        <label for="startDate">आरंभ तिथि</label>
+        <input type="date" class="form-control bg-light border-1 mr-2" required="" name = "startDate" id="startDate" {% if startDate %} value="{{startDate}}" {% endif %}>
+        </div>
+        <div class="form-group col-md-6">
+        <label for="endDate">समाप्ति तिथि</label>
+        <input type="date" class="form-control bg-light border-1 mr-2" name = "endDate" required="" id="endDate" {% if endDate %} value="{{endDate}}" {% endif %}>
+        </div>
+    </div>
+    <div class="form-group">
+            <label for="inpFile">Upload Excel:</label>
+            <input type="file" name="inpFile" />
+        </div>
+    </div>
+    <input type="submit" class = "btn btn-primary" value="submit">
+</form>
+
+{% if data %}
+    <h3><p>Test!!!</p></h3>
+    <br/>
+    <a class="link" href="/downloadExcel">Download RPO Obligation Report</a>
+{% endif %}
+
+{% endblock %}

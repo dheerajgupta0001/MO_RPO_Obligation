@@ -1,0 +1,14 @@
+{% macro render_field(field, showErrors="true") %}
+  {% if not ("hidden" in kwargs) or not (kwargs["hidden"]=="true") %}
+    <dt>{{ field.label }}</dt>
+  {% endif %}
+  <dd>{{ field(**kwargs)|safe }}
+  {% if showErrors=="true" and field.errors %}
+    <ul class=errors>
+    {% for error in field.errors %}
+      <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+  </dd>
+{% endmacro %}

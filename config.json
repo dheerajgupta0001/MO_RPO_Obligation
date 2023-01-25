@@ -1,4 +1,6 @@
 {
     "user": "WRLDC",
-    "password": "RLDC_WESTADMIN"
+    "password": "RLDC_WESTADMIN",
+    "flaskSecret": "cc1f8049-4f33-48a7-8b21-078244855897",
+    "flaskPort": 8095
 }
