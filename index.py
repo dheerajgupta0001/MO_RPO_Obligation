@@ -73,10 +73,12 @@ for curr_state in state_name:
         transactionList.append(new_transaction_dict)
         
     df = pd.DataFrame(transactionList)
-    df ['solarNet'] = df['solarDrawal'] + df['solarInjection']
-    df ['windNet'] = df['windDrawal'] + df['windInjection']
-    df ['hydroNet'] = df['hydroDrawal'] + df['hydroInjection']
-    df ['gdamNet'] = df['gdamDrawal'] + df['gdamInjection']
+    df ['solarNet'] = df['solarDrawal'] - df['solarInjection']
+    df ['windNet Before_31_03_2022'] = df['windDrawal before 31_03_2022'] - df['windInjection before 31_03_2022']
+    df ['windNet After_31_03_2022'] = df['windDrawal after 31_03_2022'] - df['windInjection after 31_03_2022']
+    df ['hydroNet Before 08_03_2019'] = df['hydroDrawal  before 08_03_2019'] - df['hydroInjection  before 08_03_2019']
+    df ['hydroNet After_08_03_2019'] = df['hydroDrawal  after 08_03_2019'] - df['hydroInjection  after 08_03_2019']
+    df ['gdamNet'] = df['gdamDrawal'] - df['gdamInjection']
     df.to_excel(writer, sheet_name=curr_state)
     print("{} Processed".format(curr_state))
 writer.save()

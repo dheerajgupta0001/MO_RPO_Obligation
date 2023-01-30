@@ -23,7 +23,7 @@ def getJsonConfig() -> dict:
 
 def loadFileMappings(filePath='input_wbes.xlsx'):
     global fileMappingsDf
-    fileMappingsDf = pd.read_excel(filePath)
+    fileMappingsDf = pd.read_excel(filePath, sheet_name= 'New_input')
     return fileMappingsDf
 
 def getFileMappings():
